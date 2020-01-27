@@ -4,12 +4,12 @@ DROP TABLE talkdesk.employee IF EXISTS;
 
     CREATE TABLE talkdesk.employee
 (
-    employee_id bigint NOT NULL,
+    employeeId bigint NOT NULL,
     name char NOT NULL,
-    start_date time(10) with time zone NOT NULL,
+    startDate time(10) with time zone NOT NULL,
     team "char" NOT NULL,
     title "char" NOT NULL,
-    CONSTRAINT PK_employee_id PRIMARY KEY (employee_id)
+    CONSTRAINT PK_employeeId PRIMARY KEY (employeeId)
 );
 ALTER TABLE talkdesk.employee OWNER TO postgres;
 

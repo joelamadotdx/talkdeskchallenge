@@ -9,6 +9,7 @@ import static org.hamcrest.CoreMatchers.is;
 @QuarkusTest
 public class HelloResourceTest {
 
+
     @Test
     public void testHelloEndpoint() {
         given()

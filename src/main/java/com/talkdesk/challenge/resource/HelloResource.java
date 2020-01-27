@@ -1,4 +1,4 @@
-package com.talkdesk.challenge.services;
+package com.talkdesk.challenge.resource;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
