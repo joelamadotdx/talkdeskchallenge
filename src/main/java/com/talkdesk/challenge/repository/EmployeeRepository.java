@@ -1,16 +1,14 @@
 package com.talkdesk.challenge.repository;
 
-import com.talkdesk.challenge.model.Employee;
-import com.talkdesk.challenge.util.EnumTeam;
+import com.talkdesk.challenge.entity.Employee;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static javax.transaction.Transactional.TxType.REQUIRED;
 
@@ -19,23 +17,36 @@ import static javax.transaction.Transactional.TxType.REQUIRED;
 public class EmployeeRepository {
 
     @Inject
-    EntityManager em;
-
-    public <T extends Employee> List<T> create() {
-       List<Employee> employeeList = new ArrayList<>();
-        Employee employee = new Employee();
-        employee.setName("Joel Amado");
-        employee.setStartDate(Timestamp.valueOf("2019-10-26 02:45:00"));
-        employee.setTeam(EnumTeam.TEAM_A.toString());
-        employee.setTittle("Mr");
-        employeeList.add(employee);
+    private EntityManager em;
 
 
-         /*IntStream.range(0, employeeList.size()).forEach(i -> {
-           em.merge(employeeList);
-        });*/
-         return null;
+    public List<Employee> create(List<Employee>  employeeList) {
+
+        IntStream.range(0, employeeList.size()).forEach(i -> {
+            em.persist(employeeList.get(i));
+        });
+        return employeeList;
     }
 
+    public void delete(Long id) {
+
+        Employee employee = em.find(Employee.class, id);
+        if (employee != null)
+            em.remove(employee);
+
+    }
+
+    public void find(Long id) {
+
+        Employee employee = em.find(Employee.class, id);
+
+    }
+    public void update(Long id) {
+
+        Employee employee = em.find(Employee.class, id);
+        if (employee != null)
+            em.merge(employee);
+
+    }
 
 }

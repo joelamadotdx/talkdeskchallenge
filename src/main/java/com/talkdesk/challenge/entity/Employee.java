@@ -1,13 +1,20 @@
-package com.talkdesk.challenge.model;
+package com.talkdesk.challenge.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Data
 @Entity
-public class Employee {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "employee")
+public class Employee{
 
     @Id
     @SequenceGenerator(name = "hibernate_sequence", sequenceName = "hibernate_sequence",schema = "talkdesk")
