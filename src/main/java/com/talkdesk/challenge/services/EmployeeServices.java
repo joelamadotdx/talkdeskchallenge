@@ -1,12 +1,14 @@
 package com.talkdesk.challenge.services;
 
 import com.talkdesk.challenge.entity.Employee;
+import com.talkdesk.challenge.mapper.EmployeeMapper;
 import com.talkdesk.challenge.model.EmployeeDTO;
 import com.talkdesk.challenge.repository.EmployeeRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -26,17 +28,21 @@ public class EmployeeServices {
      * Create employee.
      */
     public void createEmployee(List<EmployeeDTO> employeeList) {
-        List<Employee> employees = employeeList.stream().map(s -> Employee.builder().name(s.getName()).startDate(s.getStartDate()).team(s.getTeam()).tittle(s.getTittle()).build()).collect(Collectors.toList());
-        this.repository.create(employees);
+        this.repository.create(employeeList.stream().map(s -> Employee.builder().name(s.getName()).startDate(s.getStartDate()).team(s.getTeam()).tittle(s.getTittle()).build()).collect(Collectors.toList()));
     }
 
-    public void findEmployee(Long id) {
-        this.repository.find(id);
+    public Optional<EmployeeDTO> findEmployee(Long id) {
+        return this.repository.find(id).map(employee -> EmployeeDTO.builder().name(employee.getName()).startDate(employee.getStartDate()).team(employee.getTeam()).tittle(employee.getTittle()).build());
     }
 
-    public void updateEmployee(Long id) {
-        this.repository.update(id);
+    public void updateEmployee(Long id, EmployeeDTO employeeDTO) {
+       /* Employee employee = new Employee();
+        this.repository.update(id, employee.convert(employeeDTO));
+
+        */
+
     }
+
     /**
      * Delete employee.
      */

@@ -1,5 +1,7 @@
 package com.talkdesk.challenge.entity;
 
+import com.talkdesk.challenge.mapper.EmployeeMapper;
+import com.talkdesk.challenge.model.EmployeeDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,10 +16,10 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "employee")
-public class Employee{
+public class Employee {
 
     @Id
-    @SequenceGenerator(name = "hibernate_sequence", sequenceName = "hibernate_sequence",schema = "talkdesk")
+    @SequenceGenerator(name = "hibernate_sequence", sequenceName = "hibernate_sequence", schema = "talkdesk")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "employeeId")
     private Long employeeId;
@@ -33,4 +35,10 @@ public class Employee{
 
     @Column(name = "tittle")
     private String tittle;
+
+    /*public Employee convert(EmployeeDTO source) {
+        return EmployeeMapper.INSTANCE.convert(source);
+    }
+   
+     */
 }

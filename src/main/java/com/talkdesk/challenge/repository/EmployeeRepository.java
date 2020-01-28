@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 import static javax.transaction.Transactional.TxType.REQUIRED;
@@ -20,7 +21,7 @@ public class EmployeeRepository {
     private EntityManager em;
 
 
-    public List<Employee> create(List<Employee>  employeeList) {
+    public List<Employee> create(List<Employee> employeeList) {
 
         IntStream.range(0, employeeList.size()).forEach(i -> {
             em.persist(employeeList.get(i));
@@ -36,16 +37,15 @@ public class EmployeeRepository {
 
     }
 
-    public void find(Long id) {
-
-        Employee employee = em.find(Employee.class, id);
+    public Optional<Employee> find(Long id) {
+        return Optional.ofNullable(em.find(Employee.class, id));
 
     }
-    public void update(Long id) {
 
-        Employee employee = em.find(Employee.class, id);
-        if (employee != null)
-            em.merge(employee);
+    public void update(Long id, Employee employeeToUpdate) {
+
+        Optional.ofNullable(em.find(Employee.class, id));
+        em.merge(employeeToUpdate);
 
     }
 

@@ -9,6 +9,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 
 
 @Path("/employee")
@@ -29,8 +30,30 @@ public class EmployeeResource {
 
     @DELETE
     @Path("/delete/{id}")
-    public Response deleteCall(@PathParam Long id) {
+    public Response delete(@PathParam Long id) {
         this.services.deleteEmployee(id);
         return Response.ok().status(202).build();
+    }
+
+    @GET
+    @Path("/find/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response find(@PathParam Long id) {
+        /*return  this.services.findEmployee(id).map(Response::ok)
+                .orElse(Response.status(NOT_FOUND)).build();
+
+         */
+        return null;
+    }
+
+    @PUT
+    @Path("/update/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response update(@PathParam Long id, EmployeeDTO employeeDTO) {
+        /* this.services.updateEmployee(id,employeeDTO);
+        return Response.ok().status(202).build();
+
+         */
+        return null;
     }
 }

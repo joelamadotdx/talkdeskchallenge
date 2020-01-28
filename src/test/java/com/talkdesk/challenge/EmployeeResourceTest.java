@@ -2,6 +2,7 @@ package com.talkdesk.challenge;
 
 
 import com.talkdesk.challenge.entity.Employee;
+import com.talkdesk.challenge.model.EmployeeDTO;
 import com.talkdesk.challenge.services.EmployeeServices;
 import com.talkdesk.challenge.util.EnumTeam;
 import io.quarkus.test.Mock;
@@ -22,26 +23,24 @@ public class EmployeeResourceTest {
 
     @Test
     public void create() {
-       /*List<Employee> employeeList = new ArrayList<>();
-        Employee employee = new Employee();
-        employee.setName("Bruno Baptista");
-        employee.setStartDate(Timestamp.valueOf("2019-10-26 02:45:00"));
-        employee.setTeam(EnumTeam.TEAM_B.toString());
-        employee.setTittle("Admin");
-        employeeList.add(employee);
+     /*  List<EmployeeDTO> employeeDTOList = new ArrayList<>();
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setName("Bruno Baptista");
+        employeeDTO.setStartDate(Timestamp.valueOf("2019-10-26 02:45:00"));
+        employeeDTO.setTeam(EnumTeam.TEAM_B.toString());
+        employeeDTO.setTittle("Admin");
+        employeeDTOList.add(employeeDTO);
 
         //create a employee
         given()
-                .body(employeeList)
+                .body(employeeDTOList)
+                .log().all()
                 .contentType("application/json")
                 .when().post("/data/employee/create")
                 .then()
                 .statusCode(201);
-*/
 
-
-
-
+      */
     }
 
     @Test
