@@ -42,9 +42,7 @@ public class EmployeeRepository {
 
     }
 
-    public void update(Long id, Employee employeeToUpdate) {
-
-        Optional.ofNullable(em.find(Employee.class, id));
+    public void update(Employee employeeToUpdate) {
         em.merge(employeeToUpdate);
 
     }

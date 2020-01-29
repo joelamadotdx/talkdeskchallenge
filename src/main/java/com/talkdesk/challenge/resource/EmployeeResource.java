@@ -3,12 +3,15 @@ package com.talkdesk.challenge.resource;
 import com.talkdesk.challenge.model.EmployeeDTO;
 import com.talkdesk.challenge.services.EmployeeServices;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 
 
@@ -23,14 +26,14 @@ public class EmployeeResource {
     @Path("/create")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(List<EmployeeDTO> employeeDTOList) {
-       this.services.createEmployee(employeeDTOList);
+    public Response create(@NotNull List<EmployeeDTO> employeeDTOList) {
+        this.services.createEmployee(employeeDTOList);
         return Response.ok().status(201).build();
     }
 
     @DELETE
     @Path("/delete/{id}")
-    public Response delete(@PathParam Long id) {
+    public Response delete(@NotNull @PathParam Long id) {
         this.services.deleteEmployee(id);
         return Response.ok().status(202).build();
     }
@@ -38,22 +41,17 @@ public class EmployeeResource {
     @GET
     @Path("/find/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response find(@PathParam Long id) {
-        /*return  this.services.findEmployee(id).map(Response::ok)
+    public Response find(@NotNull @PathParam Long id) {
+        return this.services.findEmployee(id).map(Response::ok)
                 .orElse(Response.status(NOT_FOUND)).build();
-
-         */
-        return null;
     }
 
     @PUT
     @Path("/update/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response update(@PathParam Long id, EmployeeDTO employeeDTO) {
-        /* this.services.updateEmployee(id,employeeDTO);
+    public Response update(@NotNull @PathParam Long id, @NotNull EmployeeDTO employeeDTO) {
+        this.services.updateEmployee(id, employeeDTO);
         return Response.ok().status(202).build();
 
-         */
-        return null;
     }
 }

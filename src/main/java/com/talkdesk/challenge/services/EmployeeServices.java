@@ -5,8 +5,10 @@ import com.talkdesk.challenge.mapper.EmployeeMapper;
 import com.talkdesk.challenge.model.EmployeeDTO;
 import com.talkdesk.challenge.repository.EmployeeRepository;
 
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,11 +38,10 @@ public class EmployeeServices {
     }
 
     public void updateEmployee(Long id, EmployeeDTO employeeDTO) {
-       /* Employee employee = new Employee();
-        this.repository.update(id, employee.convert(employeeDTO));
-
-        */
-
+        Optional<Employee> employee= repository.find(id);
+        Employee employee1 = EmployeeMapper.INSTANCE.employeeDTOToEmployee(employeeDTO);
+        employee1.setEmployeeId(employee.get().getEmployeeId());
+        this.repository.update(employee1);
     }
 
     /**

@@ -1,6 +1,8 @@
 package com.talkdesk.challenge.model;
 
 
+import com.talkdesk.challenge.entity.Employee;
+import com.talkdesk.challenge.mapper.EmployeeMapper;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,5 +23,9 @@ public class EmployeeDTO {
     private String team;
 
     private String tittle;
+
+    public EmployeeDTO convertToDTO(Employee source) {
+        return EmployeeMapper.INSTANCE.employeeToEmployeeDTO(source);
+    }
 
 }

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -21,7 +22,7 @@ public class Employee {
     @Id
     @SequenceGenerator(name = "hibernate_sequence", sequenceName = "hibernate_sequence", schema = "talkdesk")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "employeeId")
+    @Column(name = "employeeid")
     private Long employeeId;
 
     @Column(name = "startDate")
@@ -36,9 +37,8 @@ public class Employee {
     @Column(name = "tittle")
     private String tittle;
 
-    /*public Employee convert(EmployeeDTO source) {
-        return EmployeeMapper.INSTANCE.convert(source);
+    public Employee convertToEntity(EmployeeDTO source) {
+        return EmployeeMapper.INSTANCE.employeeDTOToEmployee(source);
     }
-   
-     */
+
 }
