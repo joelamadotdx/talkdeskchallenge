@@ -28,7 +28,7 @@ public class EmployeeResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(@NotNull List<EmployeeDTO> employeeDTOList) {
         this.services.createEmployee(employeeDTOList);
-        return Response.ok().status(201).build();
+        return Response.ok().status(NOT_FOUND).build();
     }
 
     @DELETE

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import javax.json.bind.annotation.JsonbProperty;
 import java.sql.Timestamp;
+import java.time.Instant;
 
 @Data
 @Builder
@@ -17,8 +18,8 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class EmployeeDTO {
 
-    @JsonbProperty("startDate")
-    private Timestamp startDate;
+    @JsonbProperty("start_date")
+    private Instant startDate;
     @JsonbProperty("name")
     private String name;
     @JsonbProperty("team")

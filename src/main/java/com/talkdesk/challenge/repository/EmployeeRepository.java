@@ -6,11 +6,11 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.IntStream;
 
+import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toList;
 import static javax.transaction.Transactional.TxType.REQUIRED;
 
 @ApplicationScoped
@@ -22,23 +22,20 @@ public class EmployeeRepository {
 
 
     public List<Employee> create(List<Employee> employeeList) {
-
-        IntStream.range(0, employeeList.size()).forEach(i -> {
-            em.persist(employeeList.get(i));
-        });
-        return employeeList;
+        return employeeList.stream()
+                .map(employee -> {
+                    em.persist(employee);
+                    return employee;
+                }).collect(toList());
     }
 
     public void delete(Long id) {
-
-        Employee employee = em.find(Employee.class, id);
-        if (employee != null)
-            em.remove(employee);
-
+        ofNullable(em.find(Employee.class, id))
+                .ifPresent(employee -> em.remove(employee));
     }
 
     public Optional<Employee> find(Long id) {
-        return Optional.ofNullable(em.find(Employee.class, id));
+        return Optional.of(em.find(Employee.class, id));
 
     }
 
