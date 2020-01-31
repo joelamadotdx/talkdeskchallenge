@@ -18,7 +18,7 @@ import static javax.transaction.Transactional.TxType.REQUIRED;
 public class EmployeeRepository {
 
     @Inject
-    private EntityManager em;
+    EntityManager em;
 
 
     public List<Employee> create(List<Employee> employeeList) {

@@ -20,9 +20,10 @@
         <failsafe-plugin.version>3.0.0-M3</failsafe-plugin.version>
         <surefire-plugin.version>2.22.1</surefire-plugin.version>
         <lombok.version>1.18.6</lombok.version>
-        <javax-persistence.version>2.2</javax-persistence.version>
+        <jakarta.persistence.version>2.2.3</jakarta.persistence.version>
         <dependency.version.mapstruct>1.3.1.Final</dependency.version.mapstruct>
         <dependency.version.lombok>1.18.10</dependency.version.lombok>
+        <plugin.version.talkdesk.swagger>1.0</plugin.version.talkdesk.swagger>
 
     </properties>
     <dependencyManagement>
@@ -51,6 +52,10 @@
     <dependencies>
         <dependency>
             <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-swagger-ui</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
             <artifactId>quarkus-resteasy</artifactId>
         </dependency>
         <dependency>
@@ -76,18 +81,18 @@
             <artifactId>quarkus-jaxb</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.transaction</groupId>
-            <artifactId>javax.transaction-api</artifactId>
-            <version>1.3</version>
+            <groupId>jakarta.transaction</groupId>
+            <artifactId>jakarta.transaction-api</artifactId>
+            <version>1.3.3</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
         </dependency>
         <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>javax.persistence-api</artifactId>
-            <version>${javax-persistence.version}</version>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+            <version>${jakarta.persistence.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -177,6 +182,20 @@
                                         </native.image.path>
                                     </systemProperties>
                                 </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.talkdesk.swagger</groupId>
+                        <artifactId>swagger-maven-plugin</artifactId>
+                        <version>${plugin.version.talkdesk.swagger}</version>
+                        <executions>
+                            <execution>
+                                <id>split-files</id>
+                                <phase>process-classes</phase>
+                                <goals>
+                                    <goal>split</goal>
+                                </goals>
                             </execution>
                         </executions>
                     </plugin>

@@ -29,3 +29,7 @@ You can then execute your binary: `./target/talkdesk-joel-challenge-1.0.0-SNAPSH
 
 If you want to learn more about building native executables, please consult https://quarkus.io/guides/building-native-image-guide .
 
+## Build Instructions
+- To run app locally, start the postrgres with docker 
+- run to start the app "mvn compile quarkus:dev"
+- You can attach debugger on port 5005

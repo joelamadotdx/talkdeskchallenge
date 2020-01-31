@@ -1,6 +1,7 @@
 package com.talkdesk.challenge.repository;
 
 import com.talkdesk.challenge.entity.Employee;
+import com.talkdesk.challenge.mapper.EmployeeMapper;
 import com.talkdesk.challenge.util.EnumTeam;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
@@ -11,8 +12,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 @QuarkusTest
 public class EmployeeRepositoryIT {
@@ -47,11 +50,31 @@ public class EmployeeRepositoryIT {
     }
 
     @Test
-    void delete() {
-        final Optional<Employee> employee = employeeRepository.find(11L);
-        assertNotNull(employee);
-        employeeRepository.delete(11l);
-        assertNull(employeeRepository.find(10L));
-
+    void find() {
+        final Optional<Employee> employee = employeeRepository.find(9L);
+        assertTrue(employee.isPresent());
     }
+
+    @Test
+    void delete() {
+        final Optional<Employee> employee = employeeRepository.find(8L);
+        assertTrue(employee.isPresent());
+        employeeRepository.delete(8l);
+        assertFalse(employeeRepository.find(8L).isPresent());
+    }
+
+    @Test
+    void update() {
+        Employee employeeToUpdate = Employee.builder()
+                .name("Bruno Baptista Update Test")
+                .team(EnumTeam.TEAM_A.toString())
+                .tittle("admin").build();
+        final Optional<Employee> employee = employeeRepository.find(12L);
+        assertTrue(employee.isPresent());
+        employeeToUpdate.setEmployeeId(employee.get().getEmployeeId());
+        employeeRepository.update(employeeToUpdate);
+        final Optional<Employee> employeeUpdated = employeeRepository.find(employeeToUpdate.getEmployeeId());
+        assertEquals(employeeUpdated.get().getName(), "Bruno Baptista Update Test");
+    }
+
 }

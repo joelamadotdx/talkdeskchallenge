@@ -5,10 +5,8 @@ import com.talkdesk.challenge.mapper.EmployeeMapper;
 import com.talkdesk.challenge.model.EmployeeDTO;
 import com.talkdesk.challenge.repository.EmployeeRepository;
 
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,7 +22,7 @@ public class EmployeeServices {
      * The Repository.
      */
     @Inject
-    private EmployeeRepository repository;
+    EmployeeRepository repository;
 
     /**
      * Create employee.
@@ -39,9 +37,9 @@ public class EmployeeServices {
 
     public void updateEmployee(Long id, EmployeeDTO employeeDTO) {
         Optional<Employee> employee= repository.find(id);
-        Employee employee1 = EmployeeMapper.INSTANCE.employeeDTOToEmployee(employeeDTO);
-        employee1.setEmployeeId(employee.get().getEmployeeId());
-        this.repository.update(employee1);
+        Employee employeeToUpdate = EmployeeMapper.INSTANCE.employeeDTOToEmployee(employeeDTO);
+        employeeToUpdate.setEmployeeId(employee.get().getEmployeeId());
+        this.repository.update(employeeToUpdate);
     }
 
     /**
