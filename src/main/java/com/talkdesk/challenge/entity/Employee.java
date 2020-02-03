@@ -7,8 +7,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.json.bind.annotation.JsonbDateFormat;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.time.Instant;
 
 @Data
 @Entity
@@ -24,15 +27,20 @@ public class Employee {
     @Column(name = "employeeid")
     private Long employeeId;
 
+    @NotNull
+    @JsonbDateFormat( "yyyy-MM-dd HH:mm:ss")
     @Column(name = "startDate")
-    private Timestamp startDate;
+    private Instant startDate;
 
+    @NotNull
     @Column(name = "name")
     private String name;
 
+    @NotNull
     @Column(name = "team")
     private String team;
 
+    @NotNull
     @Column(name = "tittle")
     private String tittle;
 

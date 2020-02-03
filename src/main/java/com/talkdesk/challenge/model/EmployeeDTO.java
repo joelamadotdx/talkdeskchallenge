@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.json.bind.annotation.JsonbProperty;
-import java.sql.Timestamp;
+import java.time.Instant;
 
 @Data
 @Builder
@@ -17,13 +17,15 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class EmployeeDTO {
 
-    @JsonbProperty("startDate")
-    private Timestamp startDate;
-    @JsonbProperty("name")
+    @JsonbProperty("start_date")
+    private Instant startDate;
+
+    private Long employeeId;
+
     private String name;
-    @JsonbProperty("team")
+
     private String team;
-    @JsonbProperty("tittle")
+
     private String tittle;
 
     public EmployeeDTO convertToDTO(Employee source) {

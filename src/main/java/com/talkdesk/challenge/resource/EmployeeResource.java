@@ -12,11 +12,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
+import static javax.ws.rs.core.Response.Status.CREATED;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 
 
 @Path("/employee")
 @ApplicationScoped
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class EmployeeResource {
 
     @Inject
@@ -24,11 +27,9 @@ public class EmployeeResource {
 
     @POST
     @Path("/create")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response create(@NotNull List<EmployeeDTO> employeeDTOList) {
-        this.services.createEmployee(employeeDTOList);
-        return Response.ok().status(201).build();
+        List<EmployeeDTO> employee = this.services.createEmployee(employeeDTOList);
+        return Response.ok().status(CREATED).entity(employee).build();
     }
 
     @DELETE
@@ -40,15 +41,14 @@ public class EmployeeResource {
 
     @GET
     @Path("/find/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
     public Response find(@NotNull @PathParam Long id) {
-        return this.services.findEmployee(id).map(Response::ok)
-                .orElse(Response.status(NOT_FOUND)).build();
+        return this.services.findEmployee(id)
+                            .map(item -> Response.ok(item).build())
+                            .orElse(Response.status(NOT_FOUND).build());
     }
 
     @PUT
     @Path("/update/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
     public Response update(@NotNull @PathParam Long id, @NotNull EmployeeDTO employeeDTO) {
         this.services.updateEmployee(id, employeeDTO);
         return Response.ok().status(202).build();

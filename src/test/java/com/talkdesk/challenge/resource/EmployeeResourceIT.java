@@ -10,15 +10,19 @@ import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.Header;
 import org.junit.jupiter.api.Test;
-import static org.hamcrest.core.IsEqual.equalTo;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
-import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
 import static javax.ws.rs.core.HttpHeaders.ACCEPT;
+import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
 import static javax.ws.rs.core.Response.Status.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.IsEqual.equalTo;
 
 @QuarkusTest
 public class EmployeeResourceIT {
@@ -39,49 +43,98 @@ public class EmployeeResourceIT {
 
     }
 
+    LocalDateTime today = LocalDateTime.now();
+
     @Test
     public void create() {
 
         EmployeeDTO employeeDTO = EmployeeDTO.builder()
-                .name("Bruno Baptista")
+                .name("Bruno Baptista1")
                 .team(EnumTeam.TEAM_A.toString())
-                .tittle("admin").build();
+                .tittle("admin")
+                .startDate(today.atZone(ZoneId.systemDefault()).toInstant())
+                .build();
         List<EmployeeDTO> employeeDTOList = new ArrayList<>();
         employeeDTOList.add(employeeDTO);
 
         //create a employee
-        given()
+        EmployeeDTO[] employees = given()
                 .body(employeeDTOList)
                 .log().all()
                 .when().post("/data/employee/create")
                 .then()
-                .statusCode(CREATED.getStatusCode());
+                .statusCode(CREATED.getStatusCode())
+                .extract().as(EmployeeDTO[].class);
+
+        assertThat(employees.length, is(1));
 
     }
 
     @Test
     public void delete() {
 
+        //create employee
+        EmployeeDTO employeeDTO = EmployeeDTO.builder()
+                .name("Bruno Baptista1")
+                .team(EnumTeam.TEAM_A.toString())
+                .tittle("admin")
+                .startDate(today.atZone(ZoneId.systemDefault()).toInstant())
+                .build();
+        List<EmployeeDTO> employeeDTOList = new ArrayList<>();
+        employeeDTOList.add(employeeDTO);
+
+        EmployeeDTO[] employees = given()
+                .body(employeeDTOList)
+                .log().all()
+                .when().post("/data/employee/create")
+                .then()
+                .statusCode(CREATED.getStatusCode())
+                .extract().as(EmployeeDTO[].class);
+
+
+        // delete employee
         given()
                 .contentType("application/json")
-                .when().delete("/data/employee/delete/{id}", 3)
+                .when().delete("/data/employee/delete/{id}", employees[0].getEmployeeId())
                 .then()
                 .statusCode(ACCEPTED.getStatusCode());
 
 
+        //find employee deleted, must be not_found
         given()
                 .contentType("application/json")
-                .when().get("/data/employee/find/{id}", 3)
+                .when().get("/data/employee/find/{id}", employees[0].getEmployeeId())
                 .then()
                 .statusCode(NOT_FOUND.getStatusCode());
+
 
     }
 
     @Test
     public void find() {
+
+        //create employee
+        EmployeeDTO employeeDTO = EmployeeDTO.builder()
+                .name("Bruno Baptista find")
+                .team(EnumTeam.TEAM_A.toString())
+                .tittle("admin")
+                .startDate(today.atZone(ZoneId.systemDefault()).toInstant())
+                .build();
+        List<EmployeeDTO> employeeDTOList = new ArrayList<>();
+        employeeDTOList.add(employeeDTO);
+
+        EmployeeDTO[] employees = given()
+                .body(employeeDTOList)
+                .log().all()
+                .when().post("/data/employee/create")
+                .then()
+                .statusCode(CREATED.getStatusCode())
+                .extract().as(EmployeeDTO[].class);
+
+        //find employee created
         given()
                 .contentType("application/json")
-                .when().get("/data/employee/find/{id}", 4)
+                .when().get("/data/employee/find/{id}", employees[0].getEmployeeId())
                 .then()
                 .statusCode(OK.getStatusCode());
     }
@@ -90,25 +143,55 @@ public class EmployeeResourceIT {
     @Test
     public void update() {
 
-        EmployeeDTO employeeDTO = EmployeeDTO.builder()
+        //create employee
+        EmployeeDTO employeeDTOCreate = EmployeeDTO.builder()
                 .name("Bruno Baptista Update")
                 .team(EnumTeam.TEAM_A.toString())
-                .tittle("admin").build();
+                .tittle("admin")
+                .startDate(today.atZone(ZoneId.systemDefault()).toInstant())
+                .build();
+        List<EmployeeDTO> employeeDTOCreateList = new ArrayList<>();
+        employeeDTOCreateList.add(employeeDTOCreate);
+
+        EmployeeDTO[] employeesCreated = given()
+                .body(employeeDTOCreateList)
+                .log().all()
+                .when().post("/data/employee/create")
+                .then()
+                .statusCode(CREATED.getStatusCode())
+                .extract().as(EmployeeDTO[].class);
+
+
+        //find employee created
+        given()
+                .contentType("application/json")
+                .when().get("/data/employee/find/{id}", employeesCreated[0].getEmployeeId().longValue())
+                .then()
+                .statusCode(OK.getStatusCode());
+
+        //Update Employee
+        EmployeeDTO employeeDTOUpdate = EmployeeDTO.builder()
+                .name("Bruno Baptista Update 3")
+                .employeeId(employeesCreated[0].getEmployeeId().longValue())
+                .startDate(today.atZone(ZoneId.systemDefault()).toInstant())
+                .build();
+
 
         given()
-                .body(employeeDTO)
+                .body(employeeDTOUpdate)
                 .contentType("application/json")
-                .when().put("/data/employee/update/{id}", 20)
+                .when().put("/data/employee/update/{id}", employeesCreated[0].getEmployeeId())
                 .then()
                 .statusCode(ACCEPTED.getStatusCode());
 
 
+        //find employee updated
         given()
                 .contentType("application/json")
-                .when().get("/data/employee/find/{id}", 20)
+                .when().get("/data/employee/find/{id}", employeesCreated[0].getEmployeeId())
                 .then()
                 .statusCode(OK.getStatusCode())
-                .body("name", equalTo("Bruno Baptista Update"));
+                .body("name", equalTo("Bruno Baptista Update 3"));
 
     }
 
